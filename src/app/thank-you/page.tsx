@@ -8,10 +8,10 @@ const PHONE_NUMBER = "+91 77019 33935";
 
 export default function ThankYouPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-muted/30">
+    <div className="min-h-screen flex flex-col bg-muted/30 overflow-x-hidden">
       {/* Simple Header */}
-      <nav className="bg-white border-b h-20 flex items-center">
-        <div className="container mx-auto px-4">
+      <nav className="bg-white border-b h-20 flex items-center w-full">
+        <div className="container mx-auto px-4 max-w-7xl w-full">
           <Link href="/">
             <Image 
               src={LOGO_URL} 
@@ -68,8 +68,8 @@ export default function ThankYouPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t py-8 text-center text-xs text-muted-foreground">
-        <div className="container mx-auto px-4">
+      <footer className="bg-white border-t py-8 text-center text-xs text-muted-foreground w-full">
+        <div className="container mx-auto px-4 max-w-7xl">
           <p>© {new Date().getFullYear()} International School of Design (INSD) Delhi. All Rights Reserved.</p>
         </div>
       </footer>

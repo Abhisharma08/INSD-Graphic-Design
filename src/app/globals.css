@@ -26,6 +26,10 @@
     --ring: 211 75% 30%;
     --radius: 0.5rem;
   }
+  
+  html {
+    overflow-x: hidden;
+  }
 }
 
 @layer base {
@@ -34,8 +38,17 @@
   }
   body {
     @apply bg-background text-foreground font-body;
+    overflow-x: hidden;
+    width: 100vw;
+    max-width: 100%;
   }
   h1, h2, h3, h4, h5, h6 {
     @apply font-headline text-primary;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-7xl;
   }
 }

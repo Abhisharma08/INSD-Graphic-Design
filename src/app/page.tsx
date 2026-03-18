@@ -38,10 +38,10 @@ export default function LandingPage() {
   const uiImg = PlaceHolderImages.find(img => img.id === "ui-ux-design");
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen overflow-x-hidden">
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b shadow-sm">
-        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+      <nav className="fixed top-0 w-full z-50 bg-white/95 backdrop-blur-md border-b shadow-sm overflow-x-hidden">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between max-w-7xl">
           <Link href="/" className="flex items-center gap-2">
             <Image 
               src={LOGO_URL} 
@@ -63,9 +63,9 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      <main className="pt-20">
+      <main className="pt-20 pb-24 lg:pb-0 w-full">
         {/* Hero Section */}
-        <section className="relative overflow-hidden bg-primary py-20 lg:py-32">
+        <section className="relative overflow-hidden bg-primary py-20 lg:py-32 w-full">
           <div className="absolute inset-0 opacity-10">
             <Image 
               src={heroImg?.imageUrl || DEFAULT_PLACEHOLDER} 
@@ -76,9 +76,9 @@ export default function LandingPage() {
               data-ai-hint="graphic design workspace"
             />
           </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white space-y-6">
+          <div className="container mx-auto px-4 relative z-10 max-w-7xl">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
+              <div className="text-white space-y-6 w-full">
                 <Badge className="bg-secondary text-white border-none px-4 py-1 text-sm mb-4 animate-pulse">
                   Admissions Open 2026-27
                 </Badge>
@@ -112,8 +112,8 @@ export default function LandingPage() {
         </section>
 
         {/* Value Section */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+        <section className="py-20 bg-white w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                 <Image 
@@ -152,8 +152,8 @@ export default function LandingPage() {
         </section>
 
         {/* What You Will Learn */}
-        <section className="py-20 bg-muted">
-          <div className="container mx-auto px-4">
+        <section className="py-20 bg-muted w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <SectionHeader 
               title="What You Will Learn" 
               subtitle="Learn to communicate visually with purpose through our comprehensive modules."
@@ -182,8 +182,8 @@ export default function LandingPage() {
         </section>
 
         {/* Why Choose INSD */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
+        <section className="py-20 bg-white w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <SectionHeader 
               title="Why Choose INSD" 
               subtitle="We don't just teach design; we build careers."
@@ -212,8 +212,8 @@ export default function LandingPage() {
         </section>
 
         {/* Course Options */}
-        <section className="py-20 bg-primary text-white">
-          <div className="container mx-auto px-4">
+        <section className="py-20 bg-primary text-white w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <SectionHeader 
               title="Explore Our Programs" 
               subtitle="Find the perfect path for your design journey, regardless of your current experience level."
@@ -251,8 +251,8 @@ export default function LandingPage() {
         </section>
 
         {/* Career Opportunities */}
-        <section className="py-20 bg-white overflow-hidden">
-          <div className="container mx-auto px-4">
+        <section className="py-20 bg-white overflow-hidden w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="space-y-6">
                 <SectionHeader 
@@ -300,8 +300,8 @@ export default function LandingPage() {
         </section>
 
         {/* Placement Section */}
-        <section className="py-20 bg-muted">
-          <div className="container mx-auto px-4 text-center">
+        <section className="py-20 bg-muted w-full">
+          <div className="container mx-auto px-4 max-w-7xl text-center">
             <SectionHeader 
               title="Placement & Career Support" 
               subtitle="We bridge the gap between your education and your first professional paycheck."
@@ -332,8 +332,8 @@ export default function LandingPage() {
         </section>
 
         {/* Final CTA */}
-        <section className="py-24 bg-white relative overflow-hidden">
-          <div className="container mx-auto px-4 text-center space-y-8 relative z-10">
+        <section className="py-24 bg-white relative overflow-hidden w-full">
+          <div className="container mx-auto px-4 max-w-7xl text-center space-y-8 relative z-10">
             <h2 className="text-4xl md:text-5xl font-headline text-primary">Start Designing Your Future Today</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Join the community of next-generation designers at INSD Delhi. The next batch starts soon—don't miss out!
@@ -360,8 +360,8 @@ export default function LandingPage() {
         </section>
 
         {/* Lead Form Section (Final Lead Capture) */}
-        <section id="lead-form" className="py-20 bg-muted">
-          <div className="container mx-auto px-4">
+        <section id="lead-form" className="py-20 bg-muted w-full">
+          <div className="container mx-auto px-4 max-w-7xl">
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div className="space-y-6">
@@ -389,56 +389,24 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 text-left">
-            <div className="space-y-6">
-              <div className="inline-block bg-white p-2 rounded">
-                <Image 
-                  src={LOGO_URL} 
-                  alt="INSD PixelForge Logo" 
-                  width={180} 
-                  height={45} 
-                  className="h-10 w-auto object-contain"
-                />
-              </div>
-              <p className="text-white/60 text-sm max-w-md">
-                International Institute of Fashion Design (INSD) Delhi - A premier institute for creative education in graphic design, fashion, and interior design.
-              </p>
-              <div className="flex items-center gap-4">
-                <Link href="https://www.facebook.com/insdcorporatebranch?rdid=ji3ML27M6TURGpPF&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1CMuRdTV69%2F#" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors"><Facebook className="h-5 w-5" /></Link>
-                <Link href="https://www.instagram.com/insd_official" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors"><Instagram className="h-5 w-5" /></Link>
-                <Link href="https://www.linkedin.com/school/international-school-of-design/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors"><Linkedin className="h-5 w-5" /></Link>
-                <Link href="https://www.youtube.com/@insd-internationalschoolof5139" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors"><Youtube className="h-5 w-5" /></Link>
-              </div>
-            </div>
-            
-            <div className="space-y-6">
-              <h4 className="text-lg font-headline mb-6 text-white">Contact Info</h4>
-              <ul className="space-y-4 text-sm text-white/60">
-                <li className="flex gap-3">
-                  <Phone className="h-5 w-5 text-secondary shrink-0" />
-                  <span>{PHONE_NUMBER}</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-white/10 mt-12 pt-8 text-center text-xs text-white/40">
-            <p>© {new Date().getFullYear()} International School of Design (INSD) Delhi. All Rights Reserved.</p>
-          </div>
+      <footer className="bg-primary text-white py-8 w-full">
+        <div className="container mx-auto px-4 max-w-7xl text-center text-xs text-white/60">
+          <p>© {new Date().getFullYear()} International School of Design (INSD) Delhi. All Rights Reserved.</p>
         </div>
       </footer>
 
       {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden p-4 bg-white border-t shadow-[0_-4px_10px_rgba(0,0,0,0.1)] flex gap-2">
-        <Link href="#top-form" className="flex-1">
-          <Button className="w-full bg-secondary text-white font-bold h-12">Apply Now</Button>
-        </Link>
-        <Link href={PHONE_URL}>
-          <Button variant="outline" className="border-primary text-primary h-12 px-4">
-            <Phone className="h-5 w-5" />
-          </Button>
-        </Link>
+      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden p-4 bg-white border-t shadow-[0_-4px_10px_rgba(0,0,0,0.1)] flex gap-2 w-screen">
+        <div className="w-full flex gap-2 max-w-7xl mx-auto px-4">
+          <Link href="#top-form" className="flex-1">
+            <Button className="w-full bg-secondary text-white font-bold h-12">Apply Now</Button>
+          </Link>
+          <Link href={PHONE_URL}>
+            <Button variant="outline" className="border-primary text-primary h-12 px-4">
+              <Phone className="h-5 w-5" />
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   )
