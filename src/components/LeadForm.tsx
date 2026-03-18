@@ -142,7 +142,7 @@ export default function LeadForm({ className }: { className?: string }) {
           />
           <Button 
             type="submit" 
-            className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-12 text-lg"
+            className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-14 text-lg min-h-14"
             disabled={isSubmitting}
           >
             {isSubmitting ? (

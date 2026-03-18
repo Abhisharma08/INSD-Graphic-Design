@@ -1,3 +1,5 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
@@ -37,6 +39,25 @@ export default function LandingPage() {
   const brandingImg = PlaceHolderImages.find(img => img.id === "branding-mockup");
   const uiImg = PlaceHolderImages.find(img => img.id === "ui-ux-design");
 
+  const scrollToLeadForm = () => {
+    // We render separate LeadForm blocks for desktop vs mobile layouts.
+    // Use the visible one as the scroll target.
+    const candidates = [
+      document.getElementById("top-form-desktop"),
+      document.getElementById("top-form-mobile"),
+    ].filter(Boolean) as HTMLElement[];
+
+    const target =
+      candidates.find((el) => el.getClientRects().length > 0) ?? candidates[0];
+
+    if (!target) return;
+
+    // Ensure layout has settled (especially after click handlers / route changes)
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-x-hidden">
       {/* Navbar */}
@@ -53,12 +74,23 @@ export default function LandingPage() {
             />
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="#top-form" className="hidden md:block">
-              <Button variant="ghost" className="text-primary font-semibold">Book Counselling</Button>
-            </Link>
-            <Link href="#top-form">
-              <Button className="bg-secondary hover:bg-secondary/90 text-white font-bold px-6">Apply Now</Button>
-            </Link>
+            <Button 
+              variant="ghost" 
+              className="hidden md:block text-primary font-semibold"
+              onClick={() => {
+                scrollToLeadForm();
+              }}
+            >
+              Book Counselling
+            </Button>
+            <Button 
+              className="bg-secondary hover:bg-secondary/90 text-white font-bold px-6"
+              onClick={() => {
+                scrollToLeadForm();
+              }}
+            >
+              Apply Now
+            </Button>
           </div>
         </div>
       </nav>
@@ -89,17 +121,21 @@ export default function LandingPage() {
                   Master branding, digital design, and visual storytelling at INSD Delhi. Gain industry-ready skills and build a world-class portfolio.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Link href="#top-form">
-                    <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-white font-bold text-lg px-8 h-14 w-full sm:w-auto">
-                      Apply Now
-                    </Button>
-                  </Link>
+                  <Button 
+                    size="lg" 
+                    className="bg-secondary hover:bg-secondary/90 text-white font-bold text-lg px-8 h-14 w-full sm:w-auto"
+                    onClick={() => {
+                      scrollToLeadForm();
+                    }}
+                  >
+                    Apply Now
+                  </Button>
                 </div>
                 <p className="text-sm italic text-white/70">
                   * Limited Seats Available. Next batch starts soon.
                 </p>
               </div>
-              <div className="hidden lg:block" id="top-form">
+              <div className="hidden lg:block" id="top-form-desktop">
                 <LeadForm />
               </div>
             </div>
@@ -107,7 +143,7 @@ export default function LandingPage() {
         </section>
 
         {/* Mobile Lead Form Trigger (Visible on small screens) */}
-        <section className="lg:hidden p-4 pb-24 bg-muted border-b" id="top-form">
+        <section className="lg:hidden p-4 pb-24 bg-muted border-b" id="top-form-mobile">
           <LeadForm />
         </section>
 
@@ -238,11 +274,16 @@ export default function LandingPage() {
                       </div>
                       <p className="text-sm text-white/70">{item.desc}</p>
                     </div>
-                    <Link href="#top-form" className="block pt-4 mt-auto">
-                      <Button variant="link" className="text-white group-hover:translate-x-1 transition-transform p-0 h-auto font-bold">
-                        Enquire Now <ArrowRight className="ml-1 h-3 w-3" />
+                    <div className="pt-4 mt-auto">
+                      <Button 
+                        className="text-white font-bold text-sm group hover:translate-x-1 transition-transform bg-transparent hover:bg-white/10 px-0"
+                        onClick={() => {
+                          scrollToLeadForm();
+                        }}
+                      >
+                        Enquire Now <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
-                    </Link>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
@@ -324,8 +365,16 @@ export default function LandingPage() {
                 <h4 className="text-xl font-headline text-primary">Want to see our students' work?</h4>
                 <p className="text-muted-foreground">Download our brochure and portfolio highlights.</p>
               </div>
-              <Link href="#top-form">
-                <Button className="bg-primary text-white hover:bg-primary/90 px-8 h-12">Download Brochure</Button>
+              <Link href="#lead-form">
+                <Button 
+                  className="bg-primary text-white hover:bg-primary/90 px-8 h-12"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    scrollToLeadForm();
+                  }}
+                >
+                  Download Brochure
+                </Button>
               </Link>
             </div>
           </div>
@@ -339,28 +388,42 @@ export default function LandingPage() {
               Join the community of next-generation designers at INSD Delhi. The next batch starts soon—don't miss out!
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="#top-form">
-                <Button size="lg" className="bg-secondary hover:bg-secondary/90 text-white font-bold h-14 px-10 text-lg">
-                  Apply Now
-                </Button>
-              </Link>
-              <Link href="#top-form">
-                <Button variant="outline" size="lg" className="border-primary text-primary hover:bg-primary/5 h-14 px-10 text-lg">
-                  Get Course Details
-                </Button>
-              </Link>
-              <Link href="#top-form">
-                <Button variant="ghost" size="lg" className="text-primary font-semibold h-14 px-10 text-lg">
-                  Talk to a Counsellor
-                </Button>
-              </Link>
+              <Button 
+                size="lg" 
+                className="bg-secondary hover:bg-secondary/90 text-white font-bold h-14 px-10 text-lg w-full sm:w-auto"
+                onClick={() => {
+                  scrollToLeadForm();
+                }}
+              >
+                Apply Now
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="border-primary text-primary hover:bg-primary/5 h-14 px-10 text-lg w-full sm:w-auto"
+                onClick={() => {
+                  scrollToLeadForm();
+                }}
+              >
+                Get Course Details
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="lg" 
+                className="text-primary font-semibold h-14 px-10 text-lg w-full sm:w-auto"
+                onClick={() => {
+                  scrollToLeadForm();
+                }}
+              >
+                Talk to a Counsellor
+              </Button>
             </div>
             <p className="text-sm text-muted-foreground">No spam. Only professional career guidance.</p>
           </div>
         </section>
 
         {/* Lead Form Section (Final Lead Capture) */}
-        <section id="lead-form" className="py-20 bg-muted w-full">
+        <section id="lead-form" className="py-10 bg-muted w-full">
           <div className="container mx-auto px-4 max-w-7xl">
             <div className="max-w-4xl mx-auto">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -389,23 +452,28 @@ export default function LandingPage() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-primary text-white py-8 w-full">
+      <footer className="bg-primary text-white pt-8 pb-28 lg:py-8 w-full">
         <div className="container mx-auto px-4 max-w-7xl text-center text-xs text-white/60">
           <p>© {new Date().getFullYear()} International School of Design (INSD) Delhi. All Rights Reserved.</p>
         </div>
       </footer>
 
       {/* Mobile Sticky CTA */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden p-4 bg-white border-t shadow-[0_-4px_10px_rgba(0,0,0,0.1)] flex gap-2 w-screen">
+      <div className="fixed bottom-0 left-0 right-0 z-30 lg:hidden p-4 bg-white border-t shadow-[0_-4px_10px_rgba(0,0,0,0.1)] flex gap-2 w-screen">
         <div className="w-full flex gap-2 max-w-7xl mx-auto px-4">
-          <Link href="#top-form" className="flex-1">
-            <Button className="w-full bg-secondary text-white font-bold h-12">Apply Now</Button>
-          </Link>
-          <Link href={PHONE_URL}>
+          <Button 
+            className="flex-1 bg-secondary text-white font-bold h-12"
+            onClick={() => {
+              scrollToLeadForm();
+            }}
+          >
+            Apply Now
+          </Button>
+          <a href={PHONE_URL}>
             <Button variant="outline" className="border-primary text-primary h-12 px-4">
               <Phone className="h-5 w-5" />
             </Button>
-          </Link>
+          </a>
         </div>
       </div>
     </div>
