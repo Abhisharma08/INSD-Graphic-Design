@@ -1,10 +1,9 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, ArrowLeft, Phone } from "lucide-react"
+import { CheckCircle2, ArrowLeft } from "lucide-react"
 
 const LOGO_URL = "https://res.cloudinary.com/ddqqlfsjp/image/upload/v1773820493/Final-Logo_exeo3n.png";
-const PHONE_NUMBER = "+91 77019 33935";
 
 export default function ThankYouPage() {
   return (
@@ -48,13 +47,6 @@ export default function ThankYouPage() {
           </div>
 
           <div className="pt-6 border-t space-y-6">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <div className="flex items-center gap-2 text-primary font-semibold">
-                <Phone className="h-5 w-5 text-secondary" />
-                <span>{PHONE_NUMBER}</span>
-              </div>
-            </div>
-
             <div className="flex justify-center">
               <Link href="/">
                 <Button variant="outline" className="gap-2 border-primary text-primary hover:bg-primary/5">
