@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+// 1. Remove the Next.js router import
+// import { useRouter } from "next/navigation" 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -23,7 +24,9 @@ const formSchema = z.object({
 export default function LeadForm({ className }: { className?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
-  const router = useRouter()
+  
+  // 2. Remove the router initialization
+  // const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,33 +42,29 @@ export default function LeadForm({ className }: { className?: string }) {
     setIsSubmitting(true)
     
     try {
-      // Attempt to sync with CRM
       const result = await submitToHubSpot(values);
       
       if (result.success) {
-        // Success: Redirect immediately
-        router.push("/thank-you")
+        // 3. Force a hard browser navigation to the root thank-you page
+        window.location.href = "/thank-you"
       } else {
-        // Partial error (e.g. CRM sync failed but data was otherwise valid)
-        // We still redirect to thank you for a better user experience
         console.warn("CRM Sync Issue:", result.error);
-        router.push("/thank-you")
+        // 3. Force a hard browser navigation here as well
+        window.location.href = "/thank-you"
       }
     } catch (error) {
-      // Network error or unexpected exception
       console.error("Submission Exception:", error);
       toast({
         variant: "destructive",
         title: "Submission Error",
         description: "We encountered a problem. Please try again or contact us directly.",
       })
-      // Even on failure, if the user sees this multiple times, we might want to redirect anyway
-      // to avoid them getting stuck, but here we let them try again.
-    } finally {
-      // If we've successfully called router.push, the page will change soon.
-      // We only stop the loader if we stay on the page.
-      setIsSubmitting(false)
-    }
+      // Stop the loader only if we stay on the page (on error)
+      setIsSubmitting(false) 
+    } 
+    // Removed the `finally` block setting `isSubmitting(false)` because 
+    // if we successfully redirect, we want the button to stay in the loading 
+    // state until the new page completely loads.
   }
 
   return (
@@ -75,6 +74,7 @@ export default function LeadForm({ className }: { className?: string }) {
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          {/* ... (Your form fields remain exactly the same) ... */}
           <FormField
             control={form.control}
             name="name"
