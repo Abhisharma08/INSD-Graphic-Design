@@ -1,6 +1,7 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
+  basePath: '/graphic-design-course',
   /* config options here */
   typescript: {
     ignoreBuildErrors: true,
@@ -42,7 +43,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  basePath: '/graphic-design-course',
 };
 
 export default nextConfig;
