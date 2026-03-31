@@ -1,8 +1,9 @@
 import type {NextConfig} from 'next';
 
- const nextConfig: NextConfig = {
+const nextConfig: NextConfig = {
   basePath: '/graphic-design-course',
-  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  /* config options here */
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -10,7 +11,6 @@ import type {NextConfig} from 'next';
     ignoreDuringBuilds: true,
   },
   images: {
-   unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
@@ -47,4 +47,3 @@ import type {NextConfig} from 'next';
 };
 
 export default nextConfig;
-
