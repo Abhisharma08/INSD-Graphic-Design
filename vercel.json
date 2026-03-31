@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/design-courses-delhi/:path*",
-      "destination": "https://insd-generic.vercel.app/design-courses-delhi/:path*"
-    }
-  ]
-}
