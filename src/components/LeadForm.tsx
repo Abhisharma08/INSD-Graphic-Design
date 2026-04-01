@@ -18,6 +18,7 @@ const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   phone: z.string().min(10, { message: "Enter a valid 10-digit phone number." }).max(12),
   email: z.string().email({ message: "Please enter a valid email address." }),
+  city: z.string().min(2, { message: "Please enter your city." }),
   courseInterest: z.string({ required_error: "Please select a course." }),
 })
 
@@ -34,6 +35,7 @@ export default function LeadForm({ className }: { className?: string }) {
       name: "",
       phone: "",
       email: "",
+      city: "",
       courseInterest: "",
     },
   })
@@ -110,6 +112,19 @@ export default function LeadForm({ className }: { className?: string }) {
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
                     <Input placeholder="Your Phone Number" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="city"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>City</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your City" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
