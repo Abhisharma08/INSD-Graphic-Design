@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-// 1. Remove the Next.js router import
-// import { useRouter } from "next/navigation" 
+import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -26,9 +25,7 @@ const formSchema = z.object({
 export default function LeadForm({ className }: { className?: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { toast } = useToast()
-  
-  // 2. Remove the router initialization
-  // const router = useRouter()
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,12 +46,10 @@ export default function LeadForm({ className }: { className?: string }) {
       const result = await submitToHubSpot(values);
       
       if (result.success) {
-        // 3. Force a hard browser navigation to the root thank-you page
-        window.location.href = "/thank-you"
+        router.push("/thank-you")
       } else {
         console.warn("CRM Sync Issue:", result.error);
-        // 3. Force a hard browser navigation here as well
-        window.location.href = "/thank-you"
+        router.push("/thank-you")
       }
     } catch (error) {
       console.error("Submission Exception:", error);
@@ -63,12 +58,8 @@ export default function LeadForm({ className }: { className?: string }) {
         title: "Submission Error",
         description: "We encountered a problem. Please try again or contact us directly.",
       })
-      // Stop the loader only if we stay on the page (on error)
       setIsSubmitting(false) 
-    } 
-    // Removed the `finally` block setting `isSubmitting(false)` because 
-    // if we successfully redirect, we want the button to stay in the loading 
-    // state until the new page completely loads.
+    }
   }
 
   return (

@@ -11,7 +11,7 @@ export default function ThankYouPage() {
       {/* Simple Header */}
       <nav className="bg-white border-b h-20 flex items-center w-full">
         <div className="container mx-auto px-4 max-w-7xl w-full">
-          <Link href="/">
+          <Link href="/" prefetch={false}>
             <Image 
               src={LOGO_URL} 
               alt="INSD Logo" 
@@ -48,7 +48,7 @@ export default function ThankYouPage() {
 
           <div className="pt-6 border-t space-y-6">
             <div className="flex justify-center">
-              <Link href="/">
+              <Link href="/" prefetch={false}>
                 <Button variant="outline" className="gap-2 border-primary text-primary hover:bg-primary/5">
                   <ArrowLeft className="h-4 w-4" />
                   Back to Homepage

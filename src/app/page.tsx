@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, GraduationCap, Layout, Lightbulb, ShieldCheck, Star, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,7 +19,7 @@ export default function LandingPage() {
     <div className="flex min-h-screen flex-col overflow-x-hidden">
       <nav className="fixed top-0 z-50 w-full overflow-x-hidden border-b bg-white/95 shadow-sm backdrop-blur-md">
         <div className="container mx-auto flex h-20 max-w-7xl items-center justify-between px-4">
-          <Link href="/" className="flex items-center gap-2">
+          <div className="flex items-center gap-2" aria-label="INSD Logo">
             <Image
               src={LOGO_URL}
               alt="INSD Logo"
@@ -29,7 +28,7 @@ export default function LandingPage() {
               className="h-10 w-auto object-contain"
               priority
             />
-          </Link>
+          </div>
           <div className="flex items-center gap-4">
             <ScrollToLeadButton
               variant="ghost"
