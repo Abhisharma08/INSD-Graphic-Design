@@ -1,8 +1,22 @@
 
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
+import { Belleza, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+});
+
+const belleza = Belleza({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-headline',
+});
 
 export const metadata: Metadata = {
   title: 'INSD | Premier Graphic Design Course in Delhi',
@@ -15,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${belleza.variable}`}>
       <head>
         <Script
           id="google-tag-manager"
@@ -38,9 +52,6 @@ gtag('js', new Date());
 gtag('config', 'AW-18038800208');`,
           }}
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased">
         <noscript dangerouslySetInnerHTML={{__html: `<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T9NSTZP4" height="0" width="0" style="display:none;visibility:hidden"></iframe>`}} />
