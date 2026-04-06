@@ -2,171 +2,227 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useToast } from "@/hooks/use-toast"
 import { Loader2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { submitToHubSpot } from "@/app/actions/hubspot"
 
-const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
-  phone: z.string().min(10, { message: "Enter a valid 10-digit phone number." }).max(12),
-  email: z.string().email({ message: "Please enter a valid email address." }),
-  city: z.string().min(2, { message: "Please enter your city." }),
-  lead_source: z.string(),
-  courseInterest: z.string({ required_error: "Please select a course." }),
-})
+type FormValues = {
+  name: string
+  email: string
+  phone: string
+  city: string
+  lead_source: string
+  courseInterest: string
+}
+
+type FormErrors = Partial<Record<keyof FormValues, string>> & {
+  submit?: string
+}
+
+const defaultValues: FormValues = {
+  name: "",
+  email: "",
+  phone: "",
+  city: "",
+  lead_source: "Graphic Landing Page",
+  courseInterest: "",
+}
+
+function validateForm(values: FormValues) {
+  const errors: FormErrors = {}
+
+  if (values.name.trim().length < 2) {
+    errors.name = "Name must be at least 2 characters."
+  }
+
+  const phoneDigits = values.phone.replace(/\D/g, "")
+  if (phoneDigits.length < 10 || phoneDigits.length > 12) {
+    errors.phone = "Enter a valid 10-digit phone number."
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+    errors.email = "Please enter a valid email address."
+  }
+
+  if (values.city.trim().length < 2) {
+    errors.city = "Please enter your city."
+  }
+
+  if (!values.courseInterest) {
+    errors.courseInterest = "Please select a course."
+  }
+
+  return errors
+}
 
 export default function LeadForm({ className }: { className?: string }) {
+  const [values, setValues] = useState<FormValues>(defaultValues)
+  const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const { toast } = useToast()
   const router = useRouter()
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      phone: "",
-      email: "",
-      city: "",
-      lead_source: "Graphic Landing Page",
-      courseInterest: "",
-    },
-  })
+  function handleChange(event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+    const { name, value } = event.target
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true)
-    
-    try {
-      const result = await submitToHubSpot(values);
-      
-      if (result.success) {
-        router.push("/thank-you")
-      } else {
-        console.warn("CRM Sync Issue:", result.error);
-        router.push("/thank-you")
+    setValues((current) => ({
+      ...current,
+      [name]: value,
+    }))
+
+    setErrors((current) => {
+      if (!current[name as keyof FormErrors] && !current.submit) {
+        return current
       }
+
+      return {
+        ...current,
+        [name]: undefined,
+        submit: undefined,
+      }
+    })
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+
+    const validationErrors = validateForm(values)
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      return
+    }
+
+    setErrors({})
+    setIsSubmitting(true)
+
+    try {
+      const result = await submitToHubSpot(values)
+
+      if (!result.success) {
+        console.warn("CRM Sync Issue:", result.error)
+      }
+
+      router.push("/thank-you")
     } catch (error) {
-      console.error("Submission Exception:", error);
-      toast({
-        variant: "destructive",
-        title: "Submission Error",
-        description: "We encountered a problem. Please try again or contact us directly.",
+      console.error("Submission Exception:", error)
+      setErrors({
+        submit: "We encountered a problem. Please try again or contact us directly.",
       })
-      setIsSubmitting(false) 
+      setIsSubmitting(false)
     }
   }
 
   return (
-    <div className={`bg-white p-6 md:p-8 rounded-xl shadow-2xl border border-muted ${className}`}>
-      <h3 className="text-2xl font-headline text-primary mb-2">Start Your Graphic Design Journey</h3>
-      <p className="text-sm text-muted-foreground mb-6">Our counsellor will contact you shortly. No spam, only career guidance.</p>
-      
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <input type="hidden" {...form.register("lead_source")} />
-          <FormField
-            control={form.control}
+    <div className={`rounded-xl border border-muted bg-white p-6 shadow-2xl md:p-8 ${className}`}>
+      <h3 className="mb-2 text-2xl font-headline text-primary">Start Your Graphic Design Journey</h3>
+      <p className="mb-6 text-sm text-muted-foreground">Our counsellor will contact you shortly. No spam, only career guidance.</p>
+
+      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+        <input type="hidden" name="lead_source" value={values.lead_source} />
+
+        <div className="space-y-1.5">
+          <label htmlFor="name" className="text-sm font-medium text-foreground">Full Name</label>
+          <input
+            id="name"
             name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Your Name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            value={values.name}
+            onChange={handleChange}
+            placeholder="Your Name"
+            autoComplete="name"
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FormField
-              control={form.control}
+          {errors.name ? <p className="text-sm text-destructive">{errors.name}</p> : null}
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div className="space-y-1.5">
+            <label htmlFor="email" className="text-sm font-medium text-foreground">Email Address</label>
+            <input
+              id="email"
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your Email" type="email" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              type="email"
+              value={values.email}
+              onChange={handleChange}
+              placeholder="Your Email"
+              autoComplete="email"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             />
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your Phone Number" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="city"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>City</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Your City" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {errors.email ? <p className="text-sm text-destructive">{errors.email}</p> : null}
           </div>
-          <FormField
-            control={form.control}
+
+          <div className="space-y-1.5">
+            <label htmlFor="phone" className="text-sm font-medium text-foreground">Phone Number</label>
+            <input
+              id="phone"
+              name="phone"
+              value={values.phone}
+              onChange={handleChange}
+              placeholder="Your Phone Number"
+              autoComplete="tel"
+              inputMode="numeric"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+            {errors.phone ? <p className="text-sm text-destructive">{errors.phone}</p> : null}
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="city" className="text-sm font-medium text-foreground">City</label>
+            <input
+              id="city"
+              name="city"
+              value={values.city}
+              onChange={handleChange}
+              placeholder="Your City"
+              autoComplete="address-level2"
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+            {errors.city ? <p className="text-sm text-destructive">{errors.city}</p> : null}
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <label htmlFor="courseInterest" className="text-sm font-medium text-foreground">Interested Graphic Design Program</label>
+          <select
+            id="courseInterest"
             name="courseInterest"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Interested Graphic Design Program</FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a program" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="undergraduate">Under Graduate Program</SelectItem>
-                    <SelectItem value="postgraduate">Post Graduate Program</SelectItem>
-                    <SelectItem value="advanced-diploma">Advanced Diploma</SelectItem>
-                    <SelectItem value="diploma">Diploma</SelectItem>
-                    <SelectItem value="short-term">Short Term Course</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button 
-            type="submit" 
-            className="w-full bg-secondary hover:bg-secondary/90 text-white font-bold h-14 text-lg min-h-14"
-            disabled={isSubmitting}
+            value={values.courseInterest}
+            onChange={handleChange}
+            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="animate-spin mr-2" />
-                Processing...
-              </>
-            ) : (
-              "Submit"
-            )}
-          </Button>
-          <p className="text-center text-[10px] text-muted-foreground uppercase tracking-wider">
-            Limited Seats for the Next Batch
+            <option value="">Select a program</option>
+            <option value="undergraduate">Under Graduate Program</option>
+            <option value="postgraduate">Post Graduate Program</option>
+            <option value="advanced-diploma">Advanced Diploma</option>
+            <option value="diploma">Diploma</option>
+            <option value="short-term">Short Term Course</option>
+          </select>
+          {errors.courseInterest ? <p className="text-sm text-destructive">{errors.courseInterest}</p> : null}
+        </div>
+
+        {errors.submit ? (
+          <p className="rounded-md border border-destructive/20 bg-destructive/5 px-3 py-2 text-sm text-destructive">
+            {errors.submit}
           </p>
-        </form>
-      </Form>
+        ) : null}
+
+        <Button
+          type="submit"
+          className="min-h-14 h-14 w-full bg-secondary text-lg font-bold text-white hover:bg-secondary/90"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="mr-2 animate-spin" />
+              Processing...
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
+
+        <p className="text-center text-[10px] uppercase tracking-wider text-muted-foreground">
+          Limited Seats for the Next Batch
+        </p>
+      </form>
     </div>
   )
 }

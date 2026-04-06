@@ -14,6 +14,10 @@ const DEFAULT_PLACEHOLDER = "https://picsum.photos/seed/placeholder/800/600";
 export default function LandingPage() {
   const studentImg = PlaceHolderImages.find((img) => img.id === "student-work");
   const brandingImg = PlaceHolderImages.find((img) => img.id === "branding-mockup");
+  const deferredSectionStyle = {
+    contentVisibility: "auto",
+    containIntrinsicSize: "900px",
+  } as const
 
   return (
     <div className="flex min-h-screen flex-col overflow-x-hidden">
@@ -112,7 +116,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full bg-white py-20">
+        <section className="w-full bg-white py-20" style={deferredSectionStyle}>
           <div className="container mx-auto max-w-7xl px-4">
             <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
               <div className="relative h-[400px] overflow-hidden rounded-2xl shadow-2xl">
@@ -155,7 +159,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full bg-muted py-20">
+        <section className="w-full bg-muted py-20" style={deferredSectionStyle}>
           <div className="container mx-auto max-w-7xl px-4">
             <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-2">
               <div className="space-y-6">
@@ -185,7 +189,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full bg-white py-20">
+        <section className="w-full bg-white py-20" style={deferredSectionStyle}>
           <div className="container mx-auto max-w-7xl px-4">
             <SectionHeader
               title="Build Job-Ready Skills for Real Industry Roles"
@@ -217,7 +221,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="w-full bg-primary py-20 text-white">
+        <section className="w-full bg-primary py-20 text-white" style={deferredSectionStyle}>
           <div className="container mx-auto max-w-7xl px-4">
             <SectionHeader
               title="Choose Your Path. Build Your Career."
@@ -258,7 +262,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section className="relative w-full overflow-hidden bg-white py-24">
+        <section className="relative w-full overflow-hidden bg-white py-24" style={deferredSectionStyle}>
           <div className="container relative z-10 mx-auto max-w-7xl space-y-8 px-4 text-center">
             <h2 className="font-headline text-4xl text-primary md:text-5xl">Your Future Won&apos;t Wait</h2>
             <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
@@ -290,7 +294,7 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="lead-form" className="w-full bg-muted py-10">
+        <section id="lead-form" className="w-full bg-muted py-10" style={deferredSectionStyle}>
           <div className="container mx-auto max-w-7xl px-4">
             <div className="mx-auto max-w-4xl">
               <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
