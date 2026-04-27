@@ -210,7 +210,7 @@ export default function LeadForm({ className }: { className?: string }) {
           {errors.courseInterest ? <p className="text-sm text-destructive">{errors.courseInterest}</p> : null}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <label htmlFor="consulation_date" className="text-sm font-medium text-foreground">Consultation Date</label>
             <input
