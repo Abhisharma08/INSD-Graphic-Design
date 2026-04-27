@@ -12,6 +12,8 @@ type FormValues = {
   phone: string
   city: string
   lead_source: string
+  consulation_date: string
+  consulation_time: string
   courseInterest: string
 }
 
@@ -25,6 +27,8 @@ const defaultValues: FormValues = {
   phone: "",
   city: "",
   lead_source: "Graphic Landing Page",
+  consulation_date: "",
+  consulation_time: "",
   courseInterest: "",
 }
 
@@ -46,6 +50,14 @@ function validateForm(values: FormValues) {
 
   if (values.city.trim().length < 2) {
     errors.city = "Please enter your city."
+  }
+
+  if (!values.consulation_date) {
+    errors.consulation_date = "Please select a consultation date."
+  }
+
+  if (!values.consulation_time) {
+    errors.consulation_time = "Please select a consultation time."
   }
 
   if (!values.courseInterest) {
@@ -196,6 +208,34 @@ export default function LeadForm({ className }: { className?: string }) {
             <option value="short-term">Short Term Course</option>
           </select>
           {errors.courseInterest ? <p className="text-sm text-destructive">{errors.courseInterest}</p> : null}
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <div className="space-y-1.5">
+            <label htmlFor="consulation_date" className="text-sm font-medium text-foreground">Consultation Date</label>
+            <input
+              id="consulation_date"
+              name="consulation_date"
+              type="date"
+              value={values.consulation_date}
+              onChange={handleChange}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+            {errors.consulation_date ? <p className="text-sm text-destructive">{errors.consulation_date}</p> : null}
+          </div>
+
+          <div className="space-y-1.5">
+            <label htmlFor="consulation_time" className="text-sm font-medium text-foreground">Consultation Time</label>
+            <input
+              id="consulation_time"
+              name="consulation_time"
+              type="time"
+              value={values.consulation_time}
+              onChange={handleChange}
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            />
+            {errors.consulation_time ? <p className="text-sm text-destructive">{errors.consulation_time}</p> : null}
+          </div>
         </div>
 
         {errors.submit ? (
