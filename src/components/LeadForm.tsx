@@ -125,7 +125,7 @@ export default function LeadForm({ className }: { className?: string }) {
 
   return (
     <div className={`rounded-xl border border-muted bg-white p-6 shadow-2xl md:p-8 ${className}`}>
-      <h3 className="mb-2 text-2xl font-headline text-primary">Start Your Graphic Design Journey</h3>
+      <h3 className="mb-2 text-2xl font-headline text-primary">BOOK A FREE CONSULTATION</h3>
       <p className="mb-6 text-sm text-muted-foreground">Our counsellor will contact you shortly. No spam, only career guidance.</p>
 
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
