@@ -27,11 +27,11 @@ export default function LandingPage() {
             <Image
               src={LOGO_URL}
               alt="INSD Logo"
-              width={200}
-              height={50}
+              width={300}
+              height={89}
               className="h-10 w-auto object-contain"
               priority
-              quality={60}
+              quality={80}
             />
           </div>
           <div className="flex items-center gap-4">
