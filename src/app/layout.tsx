@@ -20,6 +20,10 @@ const belleza = Belleza({
 export const metadata: Metadata = {
   title: 'INSD | Premier Graphic Design Course in Delhi',
   description: 'Turn your creativity into a career with INSD Delhi\'s Graphic Design programs. Industry-oriented curriculum with 100% placement support.',
+  icons: {
+    icon: 'https://res.cloudinary.com/ddqqlfsjp/image/upload/v1778345780/INSD-Logo_Half-logo_wqbynu.jpg',
+    shortcut: 'https://res.cloudinary.com/ddqqlfsjp/image/upload/v1778345780/INSD-Logo_Half-logo_wqbynu.jpg',
+  },
 };
 
 export default function RootLayout({
