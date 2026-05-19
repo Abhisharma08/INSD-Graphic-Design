@@ -21,9 +21,19 @@ export async function submitToHubSpot(data: {
     return { success: false, error: 'Server configuration error.' };
   }
 
+  function parseConsultationTimestamp(date: string, time: string) {
+    if (!date || !time) return undefined
+
+    const dateTimeString = `${date}T${time}:00`
+    const timestamp = Date.parse(dateTimeString)
+
+    return Number.isNaN(timestamp) ? undefined : timestamp
+  }
+
   try {
-    const [firstname, ...lastnameParts] = data.name.trim().split(/\s+/);
-    const lastname = lastnameParts.join(' ');
+    const [firstname, ...lastnameParts] = data.name.trim().split(/\s+/)
+    const lastname = lastnameParts.join(' ')
+    const consultationTimestamp = parseConsultationTimestamp(data.consulation_date, data.consulation_time)
 
     const response = await fetch('https://api.hubapi.com/crm/v3/objects/contacts', {
       method: 'POST',
@@ -40,7 +50,7 @@ export async function submitToHubSpot(data: {
           city: data.city,
           lead_source: data.lead_source,
           consulation_date: data.consulation_date,
-          consulation_time: data.consulation_time,
+          consulation_time: consultationTimestamp ?? data.consulation_time,
           // Mapping course interest to a standard or custom property
           // Using 'lifecyclestage' or a custom 'course_interest' property if exists
           // For now, we'll use 'notes' via associations or just standard properties
